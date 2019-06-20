@@ -35,8 +35,14 @@
     #endif
 #endif
 
-#if !defined(__LITTLE_ENDIAN__) && !defined(__BIG_ENDIAN__)
-    #if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__ || \
+#if defined(__LITTLE_ENDIAN__)
+    #define ENDIANNESS_LITTLE_ENDIAN
+#elif defined(__BIG_ENDIAN__)
+    #define ENDIANNESS_BIG_ENDIAN
+#endif
+
+#if !defined(ENDIANNESS_LITTLE_ENDIAN) && !defined(ENDIANNESS_BIG_ENDIAN)
+    #if (defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__) || \
      (defined(__BYTE_ORDER) && defined(__BIG_ENDIAN) && __BYTE_ORDER == __BIG_ENDIAN) || \
      (defined(_BYTE_ORDER)  && defined(_BIG_ENDIAN)  && _BYTE_ORDER == _BIG_ENDIAN)   || \
      (defined(BYTE_ORDER)   && defined(BIG_ENDIAN)   && BYTE_ORDER == BIG_ENDIAN)     || \
@@ -45,7 +51,7 @@
      defined(_MIBSEB) || defined(__MIBSEB) || defined(__MIBSEB__) || \
      defined(_M_PPC)
         #define ENDIANNESS_BIG_ENDIAN
-    #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ || \
+    #elif (defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__) || \
      (defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && __BYTE_ORDER == __LITTLE_ENDIAN) || \
      (defined(_BYTE_ORDER)  && defined(_LITTLE_ENDIAN)  && _BYTE_ORDER == _LITTLE_ENDIAN)   || \
      (defined(BYTE_ORDER)   && defined(LITTLE_ENDIAN)   && BYTE_ORDER == LITTLE_ENDIAN)     || \
@@ -56,12 +62,6 @@
      defined(_M_ARM) /* msvc code on arm executes in little endian mode */
         #define ENDIANNESS_LITTLE_ENDIAN
     #endif
-#endif
-
-#if defined(__LITTLE_ENDIAN__)
-    #define ENDIANNESS_LITTLE_ENDIAN
-#elif defined(__BIG_ENDIAN__)
-    #define ENDIANNESS_BIG_ENDIAN
 #endif
 
 /* Define byte-swap functions, using fast processor-native built-ins where possible */
