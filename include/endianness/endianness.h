@@ -44,7 +44,7 @@
      defined(__ARMEB__) || defined(__THUMBEB__) || defined(__AARCH64EB__) || \
      defined(_MIBSEB) || defined(__MIBSEB) || defined(__MIBSEB__) || \
      defined(_M_PPC)
-        #define __BIG_ENDIAN__
+        #define ENDIANNESS_BIG_ENDIAN
     #elif __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__ || \
      (defined(__BYTE_ORDER) && defined(__LITTLE_ENDIAN) && __BYTE_ORDER == __LITTLE_ENDIAN) || \
      (defined(_BYTE_ORDER)  && defined(_LITTLE_ENDIAN)  && _BYTE_ORDER == _LITTLE_ENDIAN)   || \
@@ -54,8 +54,14 @@
      defined(_MIPSEL) || defined(__MIPSEL) || defined(__MIPSEL__) || \
      defined(_M_IX86) || defined(_M_X64) || defined(_M_IA64) || /* msvc for intel processors */ \
      defined(_M_ARM) /* msvc code on arm executes in little endian mode */
-        #define __LITTLE_ENDIAN__
+        #define ENDIANNESS_LITTLE_ENDIAN
     #endif
+#endif
+
+#if defined(__LITTLE_ENDIAN__)
+    #define ENDIANNESS_LITTLE_ENDIAN
+#elif defined(__BIG_ENDIAN__)
+    #define ENDIANNESS_BIG_ENDIAN
 #endif
 
 /* Define byte-swap functions, using fast processor-native built-ins where possible */
@@ -95,7 +101,7 @@
 /* Defines network - host byte swaps as needed depending upon platform endianness */
 // note that network order is big endian)
 
-#if defined(__LITTLE_ENDIAN__)
+#if defined(ENDIANNESS_LITTLE_ENDIAN)
     #define ntoh16(x)     bswap16((x))
     #define hton16(x)     bswap16((x))
     #define ntoh32(x)     bswap32((x))
@@ -119,7 +125,7 @@
         #define htole64(x)    (x)
     #endif
 
-#elif defined(__BIG_ENDIAN__)
+#elif defined(ENDIANNESS_BIG_ENDIAN)
     #define ntoh16(x)     (x)
     #define hton16(x)     (x)
     #define ntoh32(x)     (x)
