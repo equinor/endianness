@@ -14,8 +14,8 @@
 * Forked from https://gist.github.com/jtbr/7a43e6281e6cca353b33ee501421860c
 */
 
-#ifndef _ENDIANNESS_H
-#define _ENDIANNESS_H
+#ifndef ENDIANNESS_H
+#define ENDIANNESS_H
 
 #include <stdlib.h>
 #include <stdint.h>
@@ -146,4 +146,4 @@
     #warning "UNKNOWN Platform / endianness; network / host byte swaps not defined."
 #endif
 
-#endif // _ENDIANNESS_H
+#endif // ENDIANNESS_H
